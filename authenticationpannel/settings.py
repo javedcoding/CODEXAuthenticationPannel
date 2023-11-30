@@ -27,19 +27,21 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Application definition
-
 INSTALLED_APPS = [
-    'app.apps.UsersConfig',  # Django app
+    'app',
+    'api',
+    'rest_framework',  # Django REST Framework
+    'crispy_bootstrap5',  # Django Crispy Bootstrap5
+    'crispy_forms',  # Django Crispy Forms
+    # 'app.apps.UsersConfig',  # Django app
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',  # Django REST Framework
-    'crispy_bootstrap5',  # Django Crispy Bootstrap5
-    'crispy_forms',  # Django Crispy Forms
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

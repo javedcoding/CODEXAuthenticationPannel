@@ -9,7 +9,7 @@ class Profile(models.Model):
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
     phone = models.CharField(max_length=200)
-    address = models.CharField(max_length=200)
+    address = models.CharField(max_length=255)
     city = models.CharField(max_length=200)
     state = models.CharField(max_length=200)
     zip = models.CharField(max_length=200)
