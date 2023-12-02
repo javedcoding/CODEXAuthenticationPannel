@@ -2,8 +2,11 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
+from .forms import UserRegisterForm, UserProfile, ProfileUpdateForm
 
+# Lets structure it when are making a viewfirst handle the GET request and then the POST request
+# Also when we are replying to a request instead of putting in dictionary made inside return redirect put a context
+#
 
 def home(request):
     return redirect('app:login')
@@ -34,6 +37,15 @@ def register(request):
 
 @login_required
 def profile(request):
+    '''
+    '''
+    if request.method == 'GET':
+        user_profile = UserProfile.objects.get(user=request.user)
+        context = {
+            'profile': user_profile
+        }
+        return render(request, 'profile.html', context)
+
     # if request.method == 'POST':
     #     u_form = UserUpdateForm(request.POST, instance=request.user)
     #     p_form = ProfileUpdateForm(request.POST,
@@ -55,4 +67,19 @@ def profile(request):
     # }
 
     # return render(request, 'profile.html', context)
-    return render(request, 'profile.html')
+
+def update_profile(request):
+    user_profile = UserProfile.objects.get(user=request.user)
+
+    if request.method == 'POST':
+        form = ProfileUpdateForm(request.POST, request.FILES, instance=user_profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = ProfileUpdateForm(instance=user_profile)
+
+    context = {
+        'form': form
+    }
+    return render(request, 'update_profile.html', context)

@@ -3,7 +3,20 @@ from django.contrib.auth.models import User
 from PIL import Image
 
 
-class Profile(models.Model):
+class UserProfile(models.Model):
+    '''
+    The class for database model wiring up
+    Contains
+    user_name - From registration form (one to one connection with admin)
+    first_name -
+    last_name -
+    phone - From profile update form
+    address - From profile update form
+    city - From profile update form
+    state - From profile update form
+    zip - From profile update form
+    country - From profile update form
+    '''
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(default='default.jpg', upload_to='profile_pics')
     first_name = models.CharField(max_length=200)
