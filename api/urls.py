@@ -1,6 +1,9 @@
 from django.urls import path
-from . import views
+from .views import UserAuthenticationView, UserProfileView
+
+app_name = "api"
 
 urlpatterns = [
-    path('api/', views.get_auth, name="auth-form")
+    path('authenticate/', UserAuthenticationView.as_view(), name='user-login'),
+    path('profile/', UserProfileView.as_view(), name='user-profile'),
 ]

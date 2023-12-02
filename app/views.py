@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from rest_framework.authtoken.models import Token
 
+from .models import UserProfile
 from .forms import UserRegisterForm, UserProfile, ProfileUpdateForm
 
 # Lets structure it when are making a viewfirst handle the GET request and then the POST request
@@ -21,14 +23,21 @@ def register(request):
     elif request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
-            form.save()
-            form.cleaned_data.get('username')
+            user = form.save()
+
+             # Create and associate a token with the user
+            token, created = Token.objects.get_or_create(user=user)
+
+            # Create UserProfile and associate it with the user
+            UserProfile.objects.create(user=user)
+
+            # form.cleaned_data.get('username')
             messages.success(request, f'Your account has been created! You are now able to log in')
             return redirect('app:login')
         else:
             # error = form.errors.get() #Error is not comming exactly
             context = {
-                'form': UserRegisterForm(),
+                'form': form,
                 # 'error': error,
             }
             # form = UserRegisterForm()

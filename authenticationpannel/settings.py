@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'app',
     'api',
     'rest_framework',  # Django REST Framework
+    'rest_framework.authtoken',
     'crispy_bootstrap5',  # Django Crispy Bootstrap5
     'crispy_forms',  # Django Crispy Forms
     # 'app.apps.UsersConfig',  # Django app
@@ -42,6 +43,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        # ...
+    ],
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

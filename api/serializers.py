@@ -1,8 +1,10 @@
-from app.models import Profile
+from rest_framework import serializers
+from app.models import UserProfile
+
 from rest_framework import serializers
 
-
-class AuthUserSerializer(serializers.ModelSerializer):
+class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Profile
-        fields = ['__all__']
+        model = UserProfile
+        fields = '__all__'
+

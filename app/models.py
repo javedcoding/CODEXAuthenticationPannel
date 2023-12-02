@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+# from rest_framework.authtoken.models import Token
 from PIL import Image
 
 
@@ -18,6 +19,7 @@ class UserProfile(models.Model):
     country - From profile update form
     '''
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # token = models.OneToOneField(Token, on_delete=models.CASCADE, null=True, blank=True)
     image = models.ImageField(default='default.jpg', upload_to='profile_pics')
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
@@ -31,8 +33,8 @@ class UserProfile(models.Model):
     def __str__(self) -> str:
         return f'{self.user.username} Profile'
 
-    def save(self) -> None:
-        super().save()
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
 
         img = Image.open(self.image.path)
 
