@@ -7,21 +7,22 @@ from django.contrib.auth import authenticate
 from .serializers import UserProfileSerializer
 from app.models import UserProfile
 
+
 class UserAuthenticationView(APIView):
     authentication_classes = [TokenAuthentication]
 
     def post(self, request):
         # username and password are required for authentication
-        username = request.data.get('username')
-        password = request.data.get('password')
+        username = request.data.get("username")
+        password = request.data.get("password")
 
         user = authenticate(username=username, password=password)
 
         if user:
             # if the user is successfully authenticated return it's token
-            return Response({'token': user.auth_token.key}, status=status.HTTP_200_OK)
+            return Response({"token": user.auth_token.key}, status=status.HTTP_200_OK)
         else:
-            return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 class UserProfileView(APIView):
