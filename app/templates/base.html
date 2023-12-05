@@ -13,15 +13,19 @@
     <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
 
     {% if title %}
-    <title>Authentication - {{ title }}</title>
+        <title>Authentication - {{ title }}</title>
     {% else %}
-    <title>Authentication</title>
+        <title>Authentication</title>
     {% endif %}
 </head>
 <body>
 <header class="site-header">
     <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
+            <div class="col-sm">
+                <img alt="Company Logo" src="{% static 'logo.svg' %}" width="128">
+                <p class="col-sm h6" style="color: snow">A Net Corporation</p>
+            </div>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
                     aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -34,11 +38,11 @@
     <div class="row">
         <div class="col-md-8">
             {% if messages %}
-            {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">
-                {{ message }}
-            </div>
-            {% endfor %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
             {% endif %}
             {% block content %}{% endblock %}
         </div>
