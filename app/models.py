@@ -22,7 +22,7 @@ class UserProfile(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     # token = models.OneToOneField(Token, on_delete=models.CASCADE, null=True, blank=True)
-    image = models.ImageField(default="default.jpg", upload_to="profile_pics")
+    image = models.ImageField(default="profile_images/default.jpg", upload_to="profile_pics")
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
     phone = models.CharField(max_length=200)
