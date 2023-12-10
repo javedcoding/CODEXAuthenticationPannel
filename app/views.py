@@ -39,9 +39,8 @@ def register(request: Request) -> Union[render, redirect]:
             # Create and associate a token with the user
             token, created = Token.objects.get_or_create(user=user)
 
-            # Create UserProfile and associate it with the user
-            UserProfile.objects.create(user=user)
-
+            # # Create UserProfile and associate it with the user
+            # UserProfile.objects.create(user=user)
             # form.cleaned_data.get('username')
             messages.success(request, "Your account has been created! You are now able to log in")
             return redirect("app:login")

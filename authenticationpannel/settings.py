@@ -33,9 +33,11 @@ INSTALLED_APPS = [
     "app",
     "api",
     "rest_framework",  # Django REST Framework
-    "rest_framework.authtoken",
     "crispy_bootstrap5",  # Django Crispy Bootstrap5
     "crispy_forms",  # Django Crispy Forms
+    # Oauth API
+    "oauth2_provider",
+    # "corsheaders",
     # 'app.apps.UsersConfig',  # Django app
     "django.contrib.admin",
     "django.contrib.auth",
@@ -45,22 +47,27 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 ]
 
-REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.TokenAuthentication",
-        # ...
-    ],
-}
-
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+# CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ALLOW_CREDENTIALS = True
+# CORS_ALLOW_METHODS = (
+#     "GET",
+#     "POST",
+#     "PUT",
+#     "PATCH",
+#     "DELETE",
+#     "OPTIONS",
+# )
 
 ROOT_URLCONF = "authenticationpannel.urls"
 MEDIA_URL = "/media/"
@@ -92,6 +99,30 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
+AUTH_USER_MODEL= "app.UserProfile"
+
+OAUTH2_PROVIDER = {
+    # List of available scopes
+    "SCOPES" : {"read": "read_scope", "write": "write_scope", "groups": "Access to your groups"},
+    # 'DEFAULT_SCOPES': ['read', 'write'],
+    # 'ALLOWED_REDIRECT_URI_SCHEMES': ['http', 'https'],
+    # "ACCESS_TOKEN_EXPIRE_SECONDS": 36000,
+    # "AUTHORIZATION_CODE_EXPIRE_SECONDS": 36000,
+    # "TOKEN_ENDPOINT_AUTH_METHODS": ["client_secret_basic"],
+    # "OAUTH2_SERVER_CLASS": "api.views.CustomTokenView",
+}
+
+REST_FRAMEWORK = {
+    # "DEFAULT_PERMISSION_CLASSES": (
+    #     "rest_framework.permissions.AllowAny",
+    # ),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "oauth2_provider.contrib.rest_framework.OAuth2Authentication",
+    )
+}
+
+LOGIN_URL='/admin/login/'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
