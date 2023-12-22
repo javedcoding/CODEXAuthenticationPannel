@@ -15,7 +15,7 @@ import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -35,10 +35,7 @@ INSTALLED_APPS = [
     "rest_framework",  # Django REST Framework
     "crispy_bootstrap5",  # Django Crispy Bootstrap5
     "crispy_forms",  # Django Crispy Forms
-    # Oauth API
-    "oauth2_provider",
-    # "corsheaders",
-    # 'app.apps.UsersConfig',  # Django app
+    "oauth2_provider",  # Django OAuth Toolkit
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -56,18 +53,14 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "oauth2_provider.middleware.OAuth2TokenMiddleware",
 ]
 
-# CORS_ORIGIN_ALLOW_ALL = True
-# CORS_ALLOW_CREDENTIALS = True
-# CORS_ALLOW_METHODS = (
-#     "GET",
-#     "POST",
-#     "PUT",
-#     "PATCH",
-#     "DELETE",
-#     "OPTIONS",
-# )
+AUTHENTICATION_BACKENDS = ["oauth2_provider.backends.OAuth2Backend"]
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_METHODS = "GET"
 
 ROOT_URLCONF = "authenticationpannel.urls"
 MEDIA_URL = "/media/"
@@ -100,29 +93,18 @@ DATABASES = {
     }
 }
 
-AUTH_USER_MODEL= "app.UserProfile"
+AUTH_USER_MODEL = "app.UserProfile"
 
 OAUTH2_PROVIDER = {
-    # List of available scopes
-    "SCOPES" : {"read": "read_scope", "write": "write_scope", "groups": "Access to your groups"},
-    # 'DEFAULT_SCOPES': ['read', 'write'],
-    # 'ALLOWED_REDIRECT_URI_SCHEMES': ['http', 'https'],
-    # "ACCESS_TOKEN_EXPIRE_SECONDS": 36000,
-    # "AUTHORIZATION_CODE_EXPIRE_SECONDS": 36000,
-    # "TOKEN_ENDPOINT_AUTH_METHODS": ["client_secret_basic"],
-    # "OAUTH2_SERVER_CLASS": "api.views.CustomTokenView",
+    "OIDC_ENABLED": True,
+    "OIDC_RSA_PRIVATE_KEY": os.environ.get("OIDC_RSA_PRIVATE_KEY"),
+    "SCOPES": {"openid": "OpenID Connect scope"},
 }
 
-REST_FRAMEWORK = {
-    # "DEFAULT_PERMISSION_CLASSES": (
-    #     "rest_framework.permissions.AllowAny",
-    # ),
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "oauth2_provider.contrib.rest_framework.OAuth2Authentication",
-    )
-}
+REST_FRAMEWORK = {"DEFAULT_AUTHENTICATION_CLASSES": ("oauth2_provider.contrib.rest_framework.OAuth2Authentication",)}
 
-LOGIN_URL='/admin/login/'
+LOGIN_URL = "app:login"
+LOGIN_REDIRECT_URL = "app:profile"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

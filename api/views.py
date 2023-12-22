@@ -11,15 +11,15 @@ class UserList(generics.ListCreateAPIView):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
 
+
 class UserDetails(generics.RetrieveAPIView):
     permission_classes = [permissions.IsAuthenticated, TokenHasReadWriteScope]
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
 
+
 class GroupList(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated, TokenHasScope]
-    required_scopes = ['groups']
+    required_scopes = ["groups"]
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
-
-
