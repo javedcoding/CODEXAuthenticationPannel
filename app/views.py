@@ -7,6 +7,8 @@ from django.shortcuts import render, redirect
 from rest_framework.authtoken.models import Token
 from rest_framework.request import Request
 
+from django.core.mail import send_mail
+
 from .forms import UserRegisterForm, UserProfile, ProfileUpdateForm
 
 
@@ -41,6 +43,18 @@ def register(request: Request) -> Union[render, redirect]:
 
             # Create UserProfile and associate it with the user
             UserProfile.objects.create(user=user)
+            
+            user_fullname = user.first_name + " " + user.last_name
+            welcome_message = "Hi " + user_fullname + "! Thank you for registering with us."
+            
+            # After the new user is created, send an email
+            send_mail(
+                'Welcome to our website',
+                welcome_message,
+                'authcodex@gmail.com',
+                [user.email],
+                fail_silently=False,
+            )
 
             # form.cleaned_data.get('username')
             messages.success(request, "Your account has been created! You are now able to log in")
