@@ -1,38 +1,67 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import TokenAuthentication
-from django.contrib.auth import authenticate
-from .serializers import UserProfileSerializer
+from rest_framework import serializers
+from drf_writable_nested import WritableNestedModelSerializer
+from django.contrib.auth.models import User
 from app.models import UserProfile
 
+class UserProfileUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = ["image", "first_name", "last_name", "phone", "address", "city", "state", "zip", "country"]
 
-class UserAuthenticationView(APIView):
-    authentication_classes = [TokenAuthentication]
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = ["image", "first_name", "last_name", "phone", "address", "city", "state", "zip", "country"]
 
-    def post(self, request):
-        # username and password are required for authentication
-        username = request.data.get("username")
-        password = request.data.get("password")
+class UserAndUserProfileSerializer(WritableNestedModelSerializer):
+    profile = UserProfileSerializer(source='userprofile')  # Use the correct related name
 
-        user = authenticate(username=username, password=password)
+    class Meta:
+        model = User
+        fields = ["id", "username", "first_name", "last_name", "email", "profile"]
 
-        if user:
-            # if the user is successfully authenticated return it's token
-            return Response({"token": user.auth_token.key}, status=status.HTTP_200_OK)
-        else:
-            return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+class UserRegisterSerializer(WritableNestedModelSerializer):
+    password = serializers.CharField(write_only=True)
+    profile = UserProfileUpdateSerializer()
 
+    class Meta:
+        model = User
+        fields = ["username", "first_name", "last_name", "email", "password", "profile"]
 
-class UserProfileView(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    def create(self, validated_data):
+        profile_data = validated_data.pop('profile', None)
+        password = validated_data.pop('password', None)
 
-    def get(self, request):
-        # Retrieve the authenticated user
-        authenticated_user = request.user
+        user_instance = User(**validated_data)
+        if password is not None:
+            user_instance.set_password(password)
+        user_instance.save()
 
-        user_profile = UserProfile.objects.get(user=authenticated_user)
-        serializer = UserProfileSerializer(user_profile)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if profile_data:
+            UserProfile.objects.create(user=user_instance, **profile_data)
+
+        return user_instance
+        
+class UserProfileDataUpdateSerializer(WritableNestedModelSerializer):
+    profile = UserProfileSerializer()
+
+    class Meta:
+        model = User
+        fields = ["id", "username", "first_name", "last_name", "email", "profile"]
+
+    def update(self, instance, validated_data):
+        profile_data = validated_data.pop('profile', None)
+
+        instance.username = validated_data.get('username', instance.username)
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.email = validated_data.get('email', instance.email)
+        instance.save()
+
+        if profile_data:
+            profile = instance.userprofile
+            for attr, value in profile_data.items():
+                setattr(profile, attr, value)
+            profile.save()
+
+        return instance
