@@ -45,17 +45,13 @@ def profile(request: Request) -> render:
     user profile and redirects the user to the profile page. If the form is invalid, it renders the profile page again
     with the error message.
     """
-    if request.method == "GET":
-        user_profile = UserProfile.objects.get(user=request.user)
-        context = {"profile": user_profile}
-        return render(request, "profile.html", context)
-
-    elif request.method == "POST":
-        user_profile = UserProfile.objects.get(user=request.user)
-        form = ProfileUpdateForm(request.POST, request.FILES, instance=user_profile)
+    if request.method == "POST":
+        form = ProfileUpdateForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
             return redirect("app:profile")
-        else:
-            context = {"form": form}
-            return render(request, "profile.html", context)
+    else:
+        form = ProfileUpdateForm(instance=request.user)
+
+    context = {"form": form, 'title': 'Profile'}
+    return render(request, "profile.html", context)

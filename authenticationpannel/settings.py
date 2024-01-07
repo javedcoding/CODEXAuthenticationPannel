@@ -56,7 +56,7 @@ MIDDLEWARE = [
     "oauth2_provider.middleware.OAuth2TokenMiddleware",
 ]
 
-AUTHENTICATION_BACKENDS = ["oauth2_provider.backends.OAuth2Backend"]
+AUTHENTICATION_BACKENDS = ("oauth2_provider.backends.OAuth2Backend", "django.contrib.auth.backends.ModelBackend")
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
