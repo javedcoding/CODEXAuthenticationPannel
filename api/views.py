@@ -31,7 +31,7 @@ class UserRegisterView(APIView):
     
 class UserLoginAndDataView(APIView):
     def post(self, request):
-        username_or_email = request.data.get('username_or_email')
+        username_or_email = request.data.get('username')
         password = request.data.get('password')
         token_key = request.data.get('token')
 
@@ -44,7 +44,7 @@ class UserLoginAndDataView(APIView):
                 return Response({'error': 'Invalid token'}, status=status.HTTP_401_UNAUTHORIZED)
         elif username_or_email and password:
             # Username/email and password authentication
-            user = authenticate(username=username_or_email, password=password)
+            user = authenticate(username=username_or_email, password=password) or authenticate(email=username_or_email, password=password)
             if user is None:
                 return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
         else:
