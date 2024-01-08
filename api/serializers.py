@@ -22,7 +22,7 @@ class UserAndUserProfileSerializer(WritableNestedModelSerializer):
 
 class UserRegisterSerializer(WritableNestedModelSerializer):
     password = serializers.CharField(write_only=True)
-    profile = UserProfileUpdateSerializer()
+    profile = UserProfileUpdateSerializer(required=False)
 
     class Meta:
         model = User
