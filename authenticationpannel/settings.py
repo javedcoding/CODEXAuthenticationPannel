@@ -95,12 +95,7 @@ DATABASES = {
 
 AUTH_USER_MODEL = "app.UserProfile"
 
-OAUTH2_PROVIDER = {
-    "OIDC_ENABLED": True,
-    "OIDC_RSA_PRIVATE_KEY": os.environ.get("OIDC_RSA_PRIVATE_KEY"),
-    "SCOPES": {"openid": "OpenID Connect scope"},
-}
-
+OAUTH2_PROVIDER = {"SCOPES": {"read": "read_scope", "write": "write_scope", "groups": "Access to your groups"}}
 REST_FRAMEWORK = {"DEFAULT_AUTHENTICATION_CLASSES": ("oauth2_provider.contrib.rest_framework.OAuth2Authentication",)}
 
 LOGIN_URL = "app:login"
