@@ -17,7 +17,7 @@ class UserRegisterForm(UserCreationForm):
     last_name = forms.CharField(max_length=30, required=True)
 
     class Meta:
-        model = User
+        model = UserProfile
         fields = ["username", "first_name", "last_name", "email", "password1", "password2"]
 
     def clean_password2(self):
@@ -40,15 +40,9 @@ class UserRegisterForm(UserCreationForm):
         return password2
 
 
-class UserUpdateForm(forms.ModelForm):
-    email = forms.EmailField()
-
-    class Meta:
-        model = User
-        fields = ["username", "email"]
-
-
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ["first_name", "last_name", "phone", "address", "city", "state", "zip", "country", "image"]
+        fields = [
+            "email", "first_name", "last_name", "phone", "address", "city", "state", "zip", "country", "image"
+        ]

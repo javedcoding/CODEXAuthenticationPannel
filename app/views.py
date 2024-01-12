@@ -41,9 +41,6 @@ def register(request: Request) -> Union[render, redirect]:
             # Create and associate a token with the user
             token, created = Token.objects.get_or_create(user=user)
 
-            # Create UserProfile and associate it with the user
-            UserProfile.objects.create(user=user)
-            
             user_fullname = user.first_name + " " + user.last_name
             welcome_message = "Hi " + user_fullname + "! Thank you for registering with us."
             
@@ -77,46 +74,15 @@ def profile(request: Request) -> render:
     user profile and redirects the user to the profile page. If the form is invalid, it renders the profile page again
     with the error message.
     """
-    if request.method == "GET":
-        user_profile = UserProfile.objects.get(user=request.user)
-        context = {"profile": user_profile}
-        return render(request, "profile.html", context)
-
-    # if request.method == 'POST':
-    #     u_form = UserUpdateForm(request.POST, instance=request.user)
-    #     p_form = ProfileUpdateForm(request.POST,
-    #                                request.FILES,
-    #                                instance=request.user.profile)
-    #     if u_form.is_valid() and p_form.is_valid():
-    #         u_form.save()
-    #         p_form.save()
-    #         messages.success(request, f'Your account has been updated!')
-    #         return redirect('app:profile')
-    #
-    # else:
-    #     u_form = UserUpdateForm(instance=request.user)
-    #     p_form = ProfileUpdateForm(instance=request.user.profile)
-    #
-    # context = {
-    #     'u_form': u_form,
-    #     'p_form': p_form
-    # }
-
-    # return render(request, 'profile.html', context)
-
-
-def update_profile(request: Request) -> Union[render, redirect]:
-    user_profile = UserProfile.objects.get(user=request.user)
-
     if request.method == "POST":
-        form = ProfileUpdateForm(request.POST, request.FILES, instance=user_profile)
-
+        form = ProfileUpdateForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect("profile")
-
+            return redirect("app:profile")
     else:
-        form = ProfileUpdateForm(instance=user_profile)
+        form = ProfileUpdateForm(instance=request.user)
 
-    context = {"form": form}
-    return render(request, "update_profile.html", context)
+    context = {"form": form, 'title': 'Profile'}
+    return render(request, "profile.html", context)
+
+
