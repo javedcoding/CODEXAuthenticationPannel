@@ -43,13 +43,6 @@ This is a second method to login with registration token. This will later be cha
 <img width="858" alt="logout with token" src="https://github.com/javedcoding/CODEXAuthenticationPannel/assets/59325753/638dd8c0-9dac-4033-b301-7938e2efea63">
 
 This is the logout API. The login token will be revoked by this.
-```
-{
-    "username": "Mashnunul",
-    "email": "mashnunul.huq@stud.fra-uas.de",
-    "password": "human123"
-}
-```
 
 <img width="858" alt="update profile token field" src="https://github.com/javedcoding/CODEXAuthenticationPannel/assets/59325753/dd64d56e-5cad-44d6-be9b-1aee6c252e77">
 
@@ -58,3 +51,13 @@ For Updating user profile one needs to put login authentication token.
 <img width="849" alt="update profile" src="https://github.com/javedcoding/CODEXAuthenticationPannel/assets/59325753/abec53df-1d3e-4e05-b454-0366f803ef18">
 
 This is the API format for user profile updating.
+```
+{
+    "first_name": "TeleTest",
+    "last_name": "Test",
+    "phone": "123123",
+    "city": "mashnunul.huq@stud.fra-uas.de",
+    "state": "uganda",
+    "zip": "60422"
+}
+```
