@@ -47,12 +47,11 @@ class UserProfileDataUpdateSerializer(WritableNestedModelSerializer):
 
     class Meta:
         model = UserProfile
-        fields = ["id", "username", "first_name", "last_name", "email", "role", "provider"]
+        fields = ["first_name", "last_name", "email", "role", "provider"]
 
     def update(self, instance, validated_data):
         profile_data = validated_data.pop('profile', None)
 
-        instance.username = validated_data.get('username', instance.username)
         instance.first_name = validated_data.get('first_name', instance.first_name)
         instance.last_name = validated_data.get('last_name', instance.last_name)
         instance.email = validated_data.get('email', instance.email)
