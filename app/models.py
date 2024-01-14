@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 
 # from rest_framework.authtoken.models import Token
 from PIL import Image
+from django.utils import timezone
 
 
 class UserProfile(AbstractUser):
@@ -20,6 +21,12 @@ class UserProfile(AbstractUser):
     country - From profile update form
     """
 
+    ROLL_CHOICES = [
+        ('Base User', 'Base User'),
+        ('Admin', 'Admin'),
+        ('Super Admin', 'Super Admin'),
+    ]
+
     image = models.ImageField(default="profile_images/default.jpg", upload_to="profile_pics")
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
@@ -29,6 +36,9 @@ class UserProfile(AbstractUser):
     state = models.CharField(max_length=200)
     zip = models.CharField(max_length=200)
     country = models.CharField(max_length=200)
+    roll = models.CharField(max_length=20, choices=ROLL_CHOICES, default='Base User')
+    registration_datetime = models.DateTimeField(default=timezone.now)
+
 
     def __str__(self) -> str:
         return f"{self.username} Profile"
