@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from rest_framework.request import Request
-from .forms import UserRegisterForm, UserProfile, ProfileUpdateForm
+from .forms import UserRegisterForm, ProfileUpdateForm
 
 
 def home(request):
@@ -53,5 +53,5 @@ def profile(request: Request) -> render:
     else:
         form = ProfileUpdateForm(instance=request.user)
 
-    context = {"form": form, 'title': 'Profile'}
+    context = {"form": form, "title": "Profile"}
     return render(request, "profile.html", context)

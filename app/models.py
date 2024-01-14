@@ -1,8 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-from PIL import Image
-
 
 class UserProfile(AbstractUser):
     """
@@ -19,12 +17,12 @@ class UserProfile(AbstractUser):
     country - From profile update form
     """
 
-    """
-    Custom user profile model.
-    Contains additional fields for user profile information.
-    """
+    ROLE_CHOICES = [
+        ("Base User", "Base User"),
+        ("Admin", "Admin"),
+        ("Super Admin", "Super Admin"),
+    ]
 
-    image = models.ImageField(default="default.jpg", upload_to="profile_pics")
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
     phone = models.CharField(max_length=200)
@@ -33,17 +31,8 @@ class UserProfile(AbstractUser):
     state = models.CharField(max_length=200)
     zip = models.CharField(max_length=200)
     country = models.CharField(max_length=200)
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default="Base User")
+    provider = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self) -> str:
         return f"{self.username} Profile"
-
-    def save(self, *args, **kwargs) -> None:
-        # Call the parent class's save method
-        super().save(*args, **kwargs)
-
-        img = Image.open(self.image.path)
-
-        if img.height > 300 or img.width > 300:
-            output_size = (300, 300)
-            img.thumbnail(output_size)
-            img.save(self.image.path)
