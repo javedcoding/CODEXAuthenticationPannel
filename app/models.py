@@ -18,12 +18,13 @@ class UserProfile(AbstractUser):
     zip - From profile update form
     country - From profile update form
     """
+
     """
     Custom user profile model.
     Contains additional fields for user profile information.
     """
 
-    image = models.ImageField(default="profile_images/default.jpg", upload_to="profile_pics")
+    image = models.ImageField(default="default.jpg", upload_to="profile_pics")
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
     phone = models.CharField(max_length=200)
@@ -37,7 +38,6 @@ class UserProfile(AbstractUser):
         return f"{self.username} Profile"
 
     def save(self, *args, **kwargs) -> None:
-
         # Call the parent class's save method
         super().save(*args, **kwargs)
 

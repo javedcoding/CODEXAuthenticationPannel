@@ -1,12 +1,10 @@
 from django.urls import path
-from oauth2_provider.views import AuthorizationView, TokenView, RevokeTokenView
-from .views import DataEndpoint
+from .views import DataEndpoint, UserGroups, UserList
 
 app_name = "api"
 
 urlpatterns = [
-    path("authorize/", AuthorizationView.as_view(), name="authorize"),
-    path("token/", TokenView.as_view(), name="token"),
-    path("revoke-token/", RevokeTokenView.as_view(), name="revoke-token"),
-    path("user-detail/", DataEndpoint.as_view(), name="user"),
+    path("user-detail/", DataEndpoint.as_view(), name="user-detail"),
+    path("user-group/", UserGroups.as_view(), name="user-groups"),
+    path("group-users/<int:pk>", UserList.as_view(), name="user-groups"),
 ]
