@@ -5,12 +5,12 @@ from app.models import UserProfile
 class UserProfileUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ["email", "first_name", "last_name", "phone", "address", "city", "state", "zip", "country", "roll"]
+        fields = ["email", "first_name", "last_name", "phone", "address", "city", "state", "zip", "country", "role", "provider"]
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ["id", "email", "first_name", "last_name", "phone", "address", "city", "state", "zip", "country", "roll", "registration_datetime"]
+        fields = ["id", "email", "first_name", "last_name", "phone", "address", "city", "state", "zip", "country", "role", "provider", "registration_datetime"]
 
 # class UserAndUserProfileSerializer(WritableNestedModelSerializer):
 #     # profile = UserProfileSerializer(source='userprofile')  # Use the correct related name
@@ -26,7 +26,7 @@ class UserRegisterSerializer(WritableNestedModelSerializer):
 
     class Meta:
         model = UserProfile
-        fields = ["username", "first_name", "last_name", "email", "password", "roll", "profile"]
+        fields = ["username", "first_name", "last_name", "email", "password", "role", "provider", "profile"]
 
     def create(self, validated_data):
         profile_data = validated_data.pop('profile', None)
@@ -47,7 +47,7 @@ class UserProfileDataUpdateSerializer(WritableNestedModelSerializer):
 
     class Meta:
         model = UserProfile
-        fields = ["id", "username", "first_name", "last_name", "email", "role"]
+        fields = ["id", "username", "first_name", "last_name", "email", "role", "provider"]
 
     def update(self, instance, validated_data):
         profile_data = validated_data.pop('profile', None)
@@ -56,7 +56,8 @@ class UserProfileDataUpdateSerializer(WritableNestedModelSerializer):
         instance.first_name = validated_data.get('first_name', instance.first_name)
         instance.last_name = validated_data.get('last_name', instance.last_name)
         instance.email = validated_data.get('email', instance.email)
-        instance.role = validated_data.get('roll', instance.roll)
+        instance.role = validated_data.get('role', instance.roll)
+        instance.provider = validated_data.get('provider', instance.roll)
         instance.save()
 
         if profile_data:

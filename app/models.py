@@ -21,22 +21,23 @@ class UserProfile(AbstractUser):
     country - From profile update form
     """
 
-    ROLL_CHOICES = [
+    ROLE_CHOICES = [
         ('Base User', 'Base User'),
         ('Admin', 'Admin'),
         ('Super Admin', 'Super Admin'),
     ]
 
     image = models.ImageField(default="profile_images/default.jpg", upload_to="profile_pics")
-    first_name = models.CharField(max_length=200)
-    last_name = models.CharField(max_length=200)
+    first_name = models.CharField(max_length=200, blank=True, null=True)
+    last_name = models.CharField(max_length=200, blank=True, null=True)
     phone = models.CharField(max_length=200)
     address = models.CharField(max_length=255)
     city = models.CharField(max_length=200)
     state = models.CharField(max_length=200)
     zip = models.CharField(max_length=200)
     country = models.CharField(max_length=200)
-    roll = models.CharField(max_length=20, choices=ROLL_CHOICES, default='Base User')
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='Base User')
+    provider = models.CharField(max_length=255, blank=True, null=True)
     registration_datetime = models.DateTimeField(default=timezone.now)
 
 
