@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.contrib.auth import authenticate
-from .serializers import UserRegisterSerializer, UserAndUserProfileSerializer, UserProfileUpdateSerializer
+from .serializers import UserRegisterSerializer, UserProfileUpdateSerializer, UserProfileSerializer
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
@@ -31,7 +31,8 @@ class UserRegisterView(APIView):
     
 class UserLoginAndDataView(APIView):
     def post(self, request):
-        username_or_email = request.data.get('username')
+        username = request.data.get('username')
+        email = request.data.get('username')
         password = request.data.get('password')
         token_key = request.data.get('token')
 
@@ -42,9 +43,9 @@ class UserLoginAndDataView(APIView):
                 user = token.user
             except Token.DoesNotExist:
                 return Response({'error': 'Invalid token'}, status=status.HTTP_401_UNAUTHORIZED)
-        elif username_or_email and password:
+        elif username and password:
             # Username/email and password authentication
-            user = authenticate(username=username_or_email, password=password) or authenticate(email=username_or_email, password=password)
+            user = authenticate(username=username, password=password) or authenticate(email=email, password=password)
             if user is None:
                 return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
         else:
@@ -55,7 +56,7 @@ class UserLoginAndDataView(APIView):
             token, _ = Token.objects.get_or_create(user=user)
 
         # Use the UserAndUserProfileSerializer for the response
-        serializer = UserAndUserProfileSerializer(user)
+        serializer = UserProfileSerializer(user)
 
         # Include user details and profile details in the response, without the token
         response_data = {
