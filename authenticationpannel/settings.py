@@ -48,8 +48,8 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    "django.middleware.common.CommonMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -59,6 +59,7 @@ MIDDLEWARE = [
 AUTHENTICATION_BACKENDS = ("oauth2_provider.backends.OAuth2Backend", "django.contrib.auth.backends.ModelBackend")
 
 CSRF_COOKIE_SECURE = True
+CSRF_TRUSTED_ORIGINS = ["https://codex-auth.azurewebsites.net", "http://localhost:3000"]
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
