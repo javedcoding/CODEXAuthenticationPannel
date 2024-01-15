@@ -30,6 +30,7 @@ ALLOWED_HOSTS = ["codex-auth.azurewebsites.net", "localhost"]
 
 # Application definition
 INSTALLED_APPS = [
+    "whitenoise.runserver_nostatic",
     "app",
     "api",
     "rest_framework",  # Django REST Framework
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
@@ -150,6 +152,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
+PROJECT_ROOT = os.path.normpath(os.path.dirname(__file__))
+STATIC_ROOT = os.path.join(PROJECT_ROOT, "static")
 STATIC_URL = "static/"
 
 # Default primary key field type
