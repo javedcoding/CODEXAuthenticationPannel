@@ -72,7 +72,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "authenticationpannel.urls"
-MEDIA_URL = "/media/"
 
 TEMPLATES = [
     {
@@ -102,7 +101,11 @@ DATABASES = {
     }
 }
 
-AUTH_USER_MODEL= "app.UserProfile"
+
+AUTH_USER_MODEL = "app.UserProfile"
+
+LOGIN_URL = "app:login"
+LOGIN_REDIRECT_URL = "app:profile"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -161,6 +164,7 @@ EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_CREDENTIALS = True
+
 
 # STORAGES = {
 #     # ...

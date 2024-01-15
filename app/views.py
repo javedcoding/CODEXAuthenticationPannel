@@ -9,7 +9,8 @@ from rest_framework.request import Request
 
 from django.core.mail import send_mail
 
-from .forms import UserRegisterForm, UserProfile, ProfileUpdateForm
+from .forms import UserRegisterForm, ProfileUpdateForm
+# from .forms import UserRegisterForm, UserProfile, ProfileUpdateForm
 
 
 # Lets structure it when are making a viewfirst handle the GET request and then the POST request
@@ -84,5 +85,4 @@ def profile(request: Request) -> render:
 
     context = {"form": form, 'title': 'Profile'}
     return render(request, "profile.html", context)
-
 
