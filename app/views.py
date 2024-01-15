@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Union
 from django.contrib import messages
+from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from rest_framework.request import Request
@@ -23,13 +24,26 @@ def register(request: Request) -> Union[render, redirect]:
         context = {
             "form": UserRegisterForm(),
         }
+
         return render(request, "register.html", context)
+
     elif request.method == "POST":
         form = UserRegisterForm(request.POST)
+
         if form.is_valid():
-            form.save()
+            user = form.save()
+
+            send_mail(
+                "Welcome to our website",
+                f"Hi {user.first_name} {user.last_name}! Thank you for registering with us.",
+                "authcodex@gmail.com",
+                [user.email],
+                fail_silently=False,
+            )
+
             messages.success(request, "Your account has been created! You are now able to log in")
             return redirect("app:login")
+
         else:
             context = {
                 "form": form,
@@ -47,9 +61,11 @@ def profile(request: Request) -> render:
     """
     if request.method == "POST":
         form = ProfileUpdateForm(request.POST, instance=request.user)
+
         if form.is_valid():
             form.save()
             return redirect("app:profile")
+
     else:
         form = ProfileUpdateForm(instance=request.user)
 

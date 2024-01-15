@@ -24,9 +24,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 SECRET_KEY = "django-insecure-uwz$jar@@8afs+ghw6+zm!9h_by1%^w%o&9&#i-2(4zi_+!b&$"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["codex-auth.azurewebsites.net", "localhost"]
 
 # Application definition
 INSTALLED_APPS = [
@@ -58,9 +58,11 @@ MIDDLEWARE = [
 
 AUTHENTICATION_BACKENDS = ("oauth2_provider.backends.OAuth2Backend", "django.contrib.auth.backends.ModelBackend")
 
+CSRF_COOKIE_SECURE = True
+
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_METHODS = "GET"
+CORS_ALLOW_METHODS = ["GET", "POST", "PUT"]
 
 ROOT_URLCONF = "authenticationpannel.urls"
 MEDIA_URL = "/media/"
@@ -89,10 +91,23 @@ WSGI_APPLICATION = "authenticationpannel.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "postgres",
+        "USER": "CodexAdmin",
+        "PASSWORD": "OAuth321AHDJ",
+        "HOST": "codex-storage.postgres.database.azure.com",
+        "PORT": "5432",
+        "OPTIONS": {"sslmode": "require", "sslrootcert": "cert/DigiCertGlobalRootCA.crt.pem"},
     }
 }
+
+# Email Settings
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "authcodex@gmail.com"
+EMAIL_HOST_PASSWORD = "sron kmcn jooo wilw"
 
 AUTH_USER_MODEL = "app.UserProfile"
 
