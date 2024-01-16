@@ -110,7 +110,7 @@ EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "authcodex@gmail.com"
-EMAIL_HOST_PASSWORD = "sron kmcn jooo wilw"
+EMAIL_HOST_PASSWORD = "rusx ifkc zzdr ebwb"
 
 AUTH_USER_MODEL = "app.UserProfile"
 

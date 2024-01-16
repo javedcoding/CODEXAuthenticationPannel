@@ -33,13 +33,16 @@ def register(request: Request) -> Union[render, redirect]:
         if form.is_valid():
             user = form.save()
 
-            send_mail(
-                "Welcome to our website",
-                f"Hi {user.first_name} {user.last_name}! Thank you for registering with us.",
-                "authcodex@gmail.com",
-                [user.email],
-                fail_silently=False,
-            )
+            try:
+                send_mail(
+                    "Welcome to our website",
+                    f"Hi {user.first_name} {user.last_name}! Thank you for registering with us.",
+                    "authcodex@gmail.com",
+                    [user.email],
+                    fail_silently=False,
+                )
+            except RuntimeError:
+                pass
 
             messages.success(request, "Your account has been created! You are now able to log in")
             return redirect("app:login")
