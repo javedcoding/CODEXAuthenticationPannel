@@ -15,12 +15,11 @@ class UserRegisterForm(UserCreationForm):
     email = forms.EmailField(max_length=200, required=True)
     first_name = forms.CharField(max_length=30, required=False)
     last_name = forms.CharField(max_length=30, required=False)
-    provider = forms.CharField(max_length=255, required=False)
     
 
     class Meta:
         model = UserProfile
-        fields = ["username", "first_name", "last_name", "email", "password1", "password2", "role", "provider"]
+        fields = ["username", "first_name", "last_name", "email", "password1", "password2"]
 
     def clean_password2(self):
         # Clean the password fields once more
@@ -53,9 +52,9 @@ class ProfileUpdateForm(forms.ModelForm):
     state = forms.CharField(max_length=50, required=False)
     zip = forms.CharField(max_length=50, required=False)
     country = forms.CharField(max_length=50, required=False)
-    provider = forms.CharField(max_length=255, required=False)
+    
     class Meta:
         model = UserProfile
         fields = [
-            "email", "first_name", "last_name", "phone", "address", "city", "state", "zip", "country", "role", "provider"
+            "email", "first_name", "last_name", "phone", "address", "city", "state", "zip", "country"
         ]
