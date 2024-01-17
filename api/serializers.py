@@ -4,14 +4,17 @@ from django.utils import timezone
 from rest_framework.authtoken.models import Token
 
 class UserRegisterSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(required=True)
-    email = serializers.EmailField(required=True)
-    password = serializers.CharField(required=True)
-    role = serializers.CharField(required=True)
+    username = serializers.CharField(max_length=200, required=True)
+    first_name = serializers.CharField(max_length=30, required=False)
+    last_name = serializers.CharField(max_length=30, required=False)
+    email = serializers.EmailField(max_length=200, required=True)
+    password = serializers.CharField(max_length=30,required=True)
+    role = serializers.CharField(max_length=30,required=False)
+    provider = serializers.CharField(max_length=50,required=False)
     
     class Meta:
         model = UserProfile
-        fields = ["username", "first_name", "last_name", "email", "password", "role", "provider", "registration_datetime", "phone", "address", "city", "state", "zip", "country"]
+        fields = ["username", "first_name", "last_name", "email", "password", "role", "provider"]
 
     def create(self, validated_data):
         user_instance = UserProfile(**validated_data, registration_datetime=timezone.now())
@@ -29,14 +32,24 @@ class UserProfileDataSerializer(serializers.ModelSerializer):
         fields = '__all__'
         
 class UserProfileDataUpdateSerializer(serializers.ModelSerializer):
-    last_login = serializers.DateTimeField(read_only=True)
-    is_active = serializers.BooleanField(read_only=True)
-    
+    email = serializers.EmailField(max_length=200, required=False)
+    first_name = serializers.CharField(max_length=30, required=False)
+    last_name = serializers.CharField(max_length=30, required=False)
+    role = serializers.CharField(max_length=30,required=False)
+    provider = serializers.CharField(max_length=50,required=False)
+    phone = serializers.CharField(max_length=15, required=False)
+    address = serializers.CharField(max_length=255, required=False)
+    city = serializers.CharField(max_length=50, required=False)
+    state = serializers.CharField(max_length=50, required=False)
+    zip = serializers.CharField(max_length=50, required=False)
+    country = serializers.CharField(max_length=50, required=False)
+
     class Meta:
         model = UserProfile
-        fields = ["first_name", "last_name", "password", "role", "provider", "registration_datetime", "phone", "address", "city", "state", "zip", "country", "last_login", "is_active"]
+        fields = ["email", "first_name", "last_name", "password", "role", "provider", "phone", "address", "city", "state", "zip", "country"]
 
     def update(self, instance, validated_data):
+        instance.email = validated_data.get('email', instance.first_name)
         instance.first_name = validated_data.get('first_name', instance.first_name)
         instance.last_name = validated_data.get('last_name', instance.last_name)
         instance.role = validated_data.get('role', instance.role)

@@ -1,12 +1,15 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.contrib.auth import authenticate
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from .serializers import UserRegisterSerializer, UserProfileDataSerializer, UserProfileDataUpdateSerializer, UserDeleteSerializer
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 from app.models import UserProfile
 
+@method_decorator(csrf_exempt, name="dispatch")
 class UserRegisterView(APIView):
     def post(self, request):
         serializer = UserRegisterSerializer(data=request.data)
@@ -29,7 +32,8 @@ class UserRegisterView(APIView):
             return Response(response_data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+@method_decorator(csrf_exempt, name="dispatch")   
 class UserLoginAndDataView(APIView):
     def post(self, request):
         username = request.data.get('username')
@@ -73,7 +77,8 @@ class UserLoginAndDataView(APIView):
             response_data['token_message'] = 'Token was not there, so it was created! Please keep it in a safe place!'
 
         return Response(response_data, status=status.HTTP_200_OK)
-    
+
+@method_decorator(csrf_exempt, name="dispatch")   
 class UserProfileDataUpdateView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -92,7 +97,8 @@ class UserProfileDataUpdateView(APIView):
             return Response(response_data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            
+
+           
 class UserDeleteTokenView(APIView):
     permission_classes = [IsAuthenticated]
 

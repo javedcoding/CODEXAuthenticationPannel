@@ -71,7 +71,17 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+
+CSRF_COOKIE_SECURE = True
+CSRF_TRUSTED_ORIGINS = ["https://codex-auth.azurewebsites.net", "http://localhost:8000"]
+
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_METHODS = ["GET", "POST", "PUT"]
+
 ROOT_URLCONF = "authenticationpannel.urls"
+MEDIA_URL = "/media/"
 
 TEMPLATES = [
     {
@@ -166,9 +176,9 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
 
-# STORAGES = {
-#     # ...
-#     "staticfiles": {
-#         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-#     },
-# }
+STORAGES = {
+    # ...
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
