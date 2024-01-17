@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.contrib.auth import authenticate
-from .serializers import UserRegisterSerializer, UserProfileUpdateSerializer, UserProfileSerializer
+from .serializers import UserRegisterSerializer, UserProfileDataSerializer, UserProfileDataUpdateSerializer, UserDeleteSerializer
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
@@ -19,9 +19,10 @@ class UserRegisterView(APIView):
 
             # Include the token in the response
             response_data = {
-                'message': 'User registered successfully!!',
+                'message': 'User registered successfully!! Please keep the token in a safe place as it will not be shown again.',
                 'username': user.username,
                 'email': user.email,
+                'role': user.role,
                 'token': token.key 
             }
 
@@ -32,7 +33,7 @@ class UserRegisterView(APIView):
 class UserLoginAndDataView(APIView):
     def post(self, request):
         username = request.data.get('username')
-        email = request.data.get('username')
+        email = request.data.get('email')
         password = request.data.get('password')
         token_key = request.data.get('token')
 
@@ -43,7 +44,7 @@ class UserLoginAndDataView(APIView):
                 user = token.user
             except Token.DoesNotExist:
                 return Response({'error': 'Invalid token'}, status=status.HTTP_401_UNAUTHORIZED)
-        elif username and password:
+        elif (username or email) and password:
             # Username/email and password authentication
             user = authenticate(username=username, password=password) or authenticate(email=email, password=password)
             if user is None:
@@ -53,16 +54,23 @@ class UserLoginAndDataView(APIView):
 
         # Generate a token for the authenticated user (if not provided in the request)
         if not token_key:
-            token, _ = Token.objects.get_or_create(user=user)
+            token, created = Token.objects.get_or_create(user=user)
+            if created:
+                token_key = token.key  # Get the token key only if it was created
 
         # Use the UserAndUserProfileSerializer for the response
-        serializer = UserProfileSerializer(user)
+        serializer = UserProfileDataSerializer(user)
 
-        # Include user details and profile details in the response, without the token
+        # Include user details and profile details in the response
         response_data = {
             'message': 'Login successful. User data retrieved successfully!!',
             'user': serializer.data,
         }
+
+        # Include the token and a message in the response only if it was created
+        if 'token_key' in locals() and token_key:
+            response_data['token'] = token_key
+            response_data['token_message'] = 'Token was not there, so it was created! Please keep it in a safe place!'
 
         return Response(response_data, status=status.HTTP_200_OK)
     
@@ -70,14 +78,18 @@ class UserProfileDataUpdateView(APIView):
     permission_classes = [IsAuthenticated]
 
     def put(self, request):
-        user_profile, _ = UserProfile.objects.get_or_create(user=request.user)
-        serializer = UserProfileUpdateSerializer(user_profile, data=request.data, partial=True)
+        user_profile = UserProfile.objects.get(user=request.user)
+        serializer = UserProfileDataUpdateSerializer(user_profile, data=request.data, partial=True)
 
         if serializer.is_valid():
-            serializer.save()
-            return Response({
-                'message': 'Profile updated successfully!!!'
-            }, status=status.HTTP_200_OK)
+            user_profile, token_message = serializer.save()
+            response_data = {
+                'message': 'Profile updated successfully!!!',
+                'user': UserProfileDataUpdateSerializer(user_profile).data,
+            }
+            if token_message:
+                response_data['token_message'] = token_message
+            return Response(response_data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             
@@ -96,6 +108,31 @@ class UserDeleteTokenView(APIView):
             token.delete()
 
     def post(self, request):
-        user = request.user
-        self.delete_user_token(user)
-        return Response({'message': 'Logout successful. Token deleted successfully!!'}, status=status.HTTP_200_OK)
+        serializer = UserDeleteSerializer(data=request.data)
+        if serializer.is_valid():
+            username = serializer.validated_data.get('username')
+            email = serializer.validated_data.get('email')
+            password = serializer.validated_data.get('password')
+            token_key = serializer.validated_data.get('token')
+
+            if token_key:
+                # Token verification
+                try:
+                    token = Token.objects.get(key=token_key)
+                    user = token.user
+                except Token.DoesNotExist:
+                    return Response({'error': 'Invalid token'}, status=status.HTTP_401_UNAUTHORIZED)
+            elif (username or email) and password:
+                # Username/email and password authentication
+                user = authenticate(username=username, password=password) or authenticate(email=email, password=password)
+                if user is None:
+                    return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+            else:
+                return Response({'error': 'Invalid request. Provide username/email and password or token.'}, status=status.HTTP_400_BAD_REQUEST)
+
+            # Delete the user token and user
+            self.delete_user_token(user)
+            user.delete()
+            return Response({'message': 'User deleted successfully'}, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
