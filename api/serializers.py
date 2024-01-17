@@ -29,10 +29,10 @@ class UserProfileDataSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserProfile
-        fields = '__all__'
+        fields = ["id", "last_login", "is_active", "username", "email", "first_name", "last_name", "role", "provider", "phone", "address", "city", "state", "zip", "country", "registration_datetime"]
         
 class UserProfileDataUpdateSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(max_length=200, required=False)
+    # email = serializers.EmailField(max_length=200, required=False)
     first_name = serializers.CharField(max_length=30, required=False)
     last_name = serializers.CharField(max_length=30, required=False)
     role = serializers.CharField(max_length=30,required=False)
@@ -46,7 +46,7 @@ class UserProfileDataUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserProfile
-        fields = ["email", "first_name", "last_name", "password", "role", "provider", "phone", "address", "city", "state", "zip", "country"]
+        fields = ["first_name", "last_name", "password", "role", "provider", "phone", "address", "city", "state", "zip", "country"]
 
     def update(self, instance, validated_data):
         instance.email = validated_data.get('email', instance.first_name)

@@ -83,7 +83,7 @@ class UserProfileDataUpdateView(APIView):
     permission_classes = [IsAuthenticated]
 
     def put(self, request):
-        user_profile = UserProfile.objects.get(user=request.user)
+        user_profile = UserProfile.objects.get(username=request.data.get('username'))
         serializer = UserProfileDataUpdateSerializer(user_profile, data=request.data, partial=True)
 
         if serializer.is_valid():
