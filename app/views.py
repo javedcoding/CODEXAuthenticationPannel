@@ -67,6 +67,7 @@ def profile(request: Request) -> render:
 
         if form.is_valid():
             form.save()
+            messages.success(request, "Your account has been updated!")
             return redirect("app:profile")
 
     else:

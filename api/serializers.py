@@ -9,6 +9,12 @@ class UserProfileSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class UserProfileUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = ["role", "provider"]
+
+
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
