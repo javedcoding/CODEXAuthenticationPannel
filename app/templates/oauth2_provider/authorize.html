@@ -1,0 +1,38 @@
+{% extends "oauth2_provider/base.html" %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% block content %}
+    <div class="content-section">
+        {% if not error %}
+            <form id="authorizationForm" method="post">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">
+                        {% trans "Authorize" %} {{ application.name }}?
+                    </legend>
+                    {% for field in form %}
+                        {% if field.is_hidden %}
+                            {{ field }}
+                        {% endif %}
+                    {% endfor %}
+                    <p>{% trans "Application requires the following permissions" %}</p>
+                    <ul>
+                        {% for scope in scopes_descriptions %}
+                            <li>{{ scope }}</li>
+                        {% endfor %}
+                    </ul>
+                    {{ form.errors }}
+                    {{ form.non_field_errors }}
+                </fieldset>
+                <div class="form-group" style="padding-top: 1rem">
+                    <input type="submit" class="btn btn-outline-secondary" value="{% trans 'Cancel' %}"/>
+                    <input type="submit" class="btn btn-outline-info" name="allow" value="{% trans 'Authorize' %}"/>
+                </div>
+            </form>
+
+        {% else %}
+            <h2>Error: {{ error.error }}</h2>
+            <p>{{ error.description }}</p>
+        {% endif %}
+    </div>
+{% endblock %}
