@@ -1,0 +1,51 @@
+{% extends "oauth2_provider/base.html" %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% block content %}
+    <div class="content-section">
+        <legend class="border-bottom mb-4">
+            {{ application.name }}
+        </legend>
+        <div class="form-group">
+            <label for="clientId">{% trans "Client id" %}</label>
+            <input class="form-control" id="clientId" type="text" value="{{ application.client_id }}" readonly>
+        </div>
+        <div class="form-group" style="padding-top: 1rem">
+            <label for="clientSecret">{% trans "Client secret" %}</label>
+            <input class="form-control" id="clientSecret" type="text" value="{{ application.client_secret }}" readonly>
+        </div>
+        <div class="form-group" style="padding-top: 1rem">
+            {% if application.hash_client_secret %}
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" onClick="this.checked=!this.checked;" checked>
+            {% else %}
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" onClick="this.checked=!this.checked;">
+            {% endif %}
+            <label class="form-check-label" for="flexCheckDefault">Hash client secret</label>
+        </div>
+        <div class="form-group" style="padding-top: 1rem">
+            <label for="clientType">{% trans "Client type" %}</label>
+            <input class="form-control" id="clientType" type="text" value="{{ application.client_type }}" readonly>
+        </div>
+        <div class="form-group" style="padding-top: 1rem">
+            <label for="authGrant">{% trans "Authorization Grant Type" %}</label>
+            <input class="form-control" id="authGrant" type="text" value="{{ application.authorization_grant_type }}" readonly>
+        </div>
+        <div class="form-group" style="padding-top: 1rem">
+            <label for="redirect">{% trans "Redirect Uris" %}</label>
+            <textarea class="form-control" id="redirect" rows="3" readonly>{{ application.redirect_uris }}</textarea>
+        </div>
+        <div class="form-group" style="padding-top: 1rem">
+            <label for="postLogout">{% trans "Post Logout Redirect Uris" %}</label>
+            <textarea class="form-control" id="postLogout" rows="3" readonly>{{ application.post_logout_redirect_uris }}</textarea>
+        </div>
+        <div class="form-group" style="padding-top: 1rem">
+            <label for="postLogout">{% trans "Allowed Origins" %}</label>
+            <textarea class="form-control" id="postLogout" rows="3" readonly>{{ application.allowed_origins }}</textarea>
+        </div>
+        <div class="form-group" style="padding-top: 1rem">
+            <a class="btn btn-outline-secondary" href="{% url "oauth2_provider:list" %}">{% trans "Go Back" %}</a>
+            <a class="btn btn-outline-info" href="{% url "oauth2_provider:update" application.id %}">{% trans "Edit" %}</a>
+            <a class="btn btn-outline-danger" href="{% url "oauth2_provider:delete" application.id %}">{% trans "Delete" %}</a>
+        </div>
+    </div>
+{% endblock content %}
