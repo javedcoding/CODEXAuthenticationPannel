@@ -3,14 +3,39 @@
 ## Contents
 
 *   [API Documentation](#API-Documentation)
+    *   [Normal Easy Auithorization Server](#Normal-Easy-Auithorization-Server)
+        *   [Important URLs](#Important-URLs)
+        *   [How To Use Our API](#How-To-Use-Our-API)
+    *   [OAuth2 Auithorization Server](#OAuth2-Auithorization-Server)
 *   [Getting started](#getting-started)
     *   [Requirements](#requirements)
     *   [Install](#install)
     *   [Usage](#usage)
 
 
-## API-Documentation
+### API-Documentation
+We have built two types of authorization systems. One is JWT authorization which has some flaws and back lags. Another one is industry standard OAuth2 Service. Feel free to use any of them.
+
+## Normal Easy Auithorization Server
 At first this is version 0.1 which is live. There will be more changes in api of later versions
+
+# Important URLs 
+First Important URL is the Registration API URL:
+```
+https://codexauthv2.onrender.com/api/register/
+```
+Next URL is the Login API URL:
+```
+https://codexauthv2.onrender.com/api/login/
+```
+Then the updating of profile is accomodated with the following URL:
+```
+https://codexauthv2.onrender.com/api/update-profile/
+```
+The last URL is if someone wants to delete the user profile:
+```
+https://codexauthv2.onrender.com/api/delete/
+```
 
 <img width="896" alt="register with mostly required fileds" src="https://github.com/javedcoding/CODEXAuthenticationPannel/assets/59325753/5d647edd-ae04-49b4-acc3-f9d4fac362be">
 
