@@ -6,8 +6,6 @@
     *   [Important URLs](#Important-URLs)
     *   [How To Use Our API](#How-To-Use-Our-API)
 *   [OAuth2 Auithorization Server](#OAuth2-Auithorization-Server)
-    *   [Important URLs](#Important-URLs)
-    *   [How To Use Our API](#How-To-Use-Our-API)
 
 
 
@@ -211,7 +209,7 @@ need them later. The following picture shows the registering page
 
 ![Application Registering](https://github.com/javedcoding/CODEXAuthenticationPannel/blob/ayan_forked_hung/readme_pics/register.png)
 
-### Step 2: Consuming (Create an OAuth2 Client)
+### Step 2: Generating Access & Auth Token (Create an OAuth2 Client)
 
 Here are some tutorials from the web on how to create a OAuth2 Client. You can follow any of them to get a glimpse of
 how to create a OAuth2 Client.
@@ -259,7 +257,7 @@ const bodyParams = new URLSearchParams({
   })
 ```
 
-### Step 2: Consuming (Using Postman)
+### Step 2: Generating Access & Auth Token (Using Postman)
 
 **_Note: Code verifier and code challenge is automatically created by postman._**
 
@@ -277,9 +275,9 @@ Change these parameters under the `Authorization` tab in postman:
 ```
 Then you can get the token by pressing the `Get New Access Token` button. The following picture shows the postman:
 
-![Application Registering](https://github.com/javedcoding/CODEXAuthenticationPannel/blob/ayan_forked_hung/readme_pics/token_creation.png)
+![Token Creation](https://github.com/javedcoding/CODEXAuthenticationPannel/blob/ayan_forked_hung/readme_pics/token_creation.png)
 
-### Step 2: Consuming (Using Commandline & Browser)
+### Step 2: Generating Access & Auth Token (Using Commandline & Browser)
 
 **_Note: You'll need to create a code verifier and code challenge. Here is a python code and Js code to generate them
 they are not mentioned in all the tutorials_**
@@ -342,7 +340,7 @@ const headerParams = new URLSearchParams({
   })
 ```
 
-### Step 4: Resources behind API:
+### Resources behind API:
 
 1. https://codex-auth.azurewebsites.net/auth/user-detail/ (GET): Provides you with all the user details of the user.
     ```json
