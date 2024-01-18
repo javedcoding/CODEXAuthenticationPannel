@@ -7,6 +7,8 @@
         *   [Important URLs](#Important-URLs)
         *   [How To Use Our API](#How-To-Use-Our-API)
     *   [OAuth2 Auithorization Server](#OAuth2-Auithorization-Server)
+        *   [Important URLs](#Important-URLs)
+        *   [How To Use Our API](#How-To-Use-Our-API)
 *   [Getting started](#getting-started)
     *   [Requirements](#requirements)
     *   [Install](#install)
@@ -17,7 +19,7 @@
 We have built two types of authorization systems. One is JWT authorization which has some flaws and back lags. Another one is industry standard OAuth2 Service. Feel free to use any of them.
 
 ### Normal Easy Auithorization Server
-At first this is version 0.1 which is live. There will be more changes in api of later versions
+At first this is version 1.1 which is live. There can be more changes in api of later versions
 
 #### Important URLs 
 First Important URL is the Registration API URL:
@@ -196,3 +198,82 @@ Response of the API:
     "message": "User deleted successfully"
 }
 ```
+
+### OAuth2 Auithorization Server
+This is an industry standard authorization system. Oauth2 is implemented aith PKCE type Authorization Code. This is stable version 2.0.
+
+#### Important URLs 
+First Important URL is the Application Registration API URL (as like through google you are registering for chatgpt):
+```
+https://codex-auth.azurewebsites.net/auth/applications/register
+```
+Corresponding Important URL is the Application Registration API AUTH URL:
+```
+https://codex-auth.azurewebsites.net/auth/authorize
+```
+Another corresponding Important URL is the Application Registration API AUTH Token URL:
+```
+https://codex-auth.azurewebsites.net/auth/token
+```
+Next URL is the User Register URL:
+```
+https://codex-auth.azurewebsites.net/register/
+```
+Next URL is the Login URL:
+```
+https://codex-auth.azurewebsites.net/login/
+```
+Then the updating of profile is accomodated with the following API URL:
+```
+https://codex-auth.azurewebsites.net/api/user-profile-update/
+```
+The last URL is the user profile API:
+```
+https://codex-auth.azurewebsites.net/api/user-detail/
+```
+
+#### How To Use Our API
+This API system is implemented through secured Oauth2 authentication system. The format is fixed for calling. Most of the fields which are mandatory will be mentioned with a *. Other optional fields can be ommited from the request body.
+
+##### First API for Register
+
+
+Format is below for the POST request:
+```
+
+```
+username*:- Provide the username to be used while login
+email*:- Provide the email to be used while registering and a confirmation will come to this email if its correct.
+password*:- Provide a password
+role:- Provide user role between Basic User, Admin, Super Admin
+provider:- Provider details which is upto 50 characters long
+
+A response will come up like the below
+
+
+
+
+```
+
+```
+
+Important you will need the token to pass while updating profile and deleting profile so save it in your database or somewhere else.
+
+#### Last API for Login
+
+
+
+Format is below for the POST request:
+```
+
+```
+username*:- Provide the username used while registering
+password*:- Provide a password used while registering
+
+A Response will be provided just like below:
+
+
+```
+
+```
+If token is changed there will be a token field also which is required for Updating Profile or Deleting Profile
