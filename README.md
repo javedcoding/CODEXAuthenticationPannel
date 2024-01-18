@@ -2,26 +2,22 @@
 
 ## Contents
 
-*   [API Documentation](#API-Documentation)
-    *   [Normal Easy Auithorization Server](#Normal-Easy-Auithorization-Server)
-        *   [Important URLs](#Important-URLs)
-        *   [How To Use Our API](#How-To-Use-Our-API)
-    *   [OAuth2 Auithorization Server](#OAuth2-Auithorization-Server)
-        *   [Important URLs](#Important-URLs)
-        *   [How To Use Our API](#How-To-Use-Our-API)
-*   [Getting started](#getting-started)
-    *   [Requirements](#requirements)
-    *   [Install](#install)
-    *   [Usage](#usage)
+*   [Normal Easy Auithorization Server](#Normal-Easy-Auithorization-Server)
+    *   [Important URLs](#Important-URLs)
+    *   [How To Use Our API](#How-To-Use-Our-API)
+*   [OAuth2 Auithorization Server](#OAuth2-Auithorization-Server)
+    *   [Important URLs](#Important-URLs)
+    *   [How To Use Our API](#How-To-Use-Our-API)
 
 
-## API-Documentation
-We have built two types of authorization systems. One is JWT authorization which has some flaws and back lags. Another one is industry standard OAuth2 Service. Feel free to use any of them.
 
-### Normal Easy Auithorization Server
+We have built two types of authorization systems. One is JWT authorization which has some flaws and back lags.
+Another one is industry standard OAuth2 Service. Feel free to use any of them.
+
+## Normal Easy Auithorization Server
 At first this is version 1.1 which is live. There can be more changes in api of later versions
 
-#### Important URLs
+### Important URLs
 First Important URL is the Registration API URL:
 ```
 https://codexauthv2.onrender.com/api/register/
@@ -40,10 +36,10 @@ https://codexauthv2.onrender.com/api/delete/
 ```
 
 
-#### How To Use Our API
+### How To Use Our API
 This API system is easy to use APIs. There can be small changes time to time. But the format is fixed for calling. Most of the fields which are mandatory will be mentioned with a *. Other optional fields can be ommited from the request body.
 
-##### First API for Register
+### First API for Register
 ![image](https://github.com/javedcoding/CODEXAuthenticationPannel/assets/59325753/502cb9b6-64fa-4367-9eee-3011ed84fe48)
 
 Format is below for the POST request:
@@ -78,7 +74,7 @@ A response will come up like the below
 
 Important you will need the token to pass while updating profile and deleting profile so save it in your database or somewhere else.
 
-#### Second API for Login
+### Second API for Login
 ![image](https://github.com/javedcoding/CODEXAuthenticationPannel/assets/59325753/943177b7-ae5a-4115-8a2e-12fd2d0bb754)
 
 
@@ -118,7 +114,7 @@ A Response will be provided just like below:
 }
 ```
 If token is changed there will be a token field also which is required for Updating Profile or Deleting Profile
-#### Third API for Update-Profile
+### Third API for Update-Profile
 
 Use in the PUT request Header this key and value:
 ![image](https://github.com/javedcoding/CODEXAuthenticationPannel/assets/59325753/6100abec-dc6d-40a9-850d-c911dc96af90)
@@ -169,7 +165,7 @@ Response of the API:
 }
 ```
 
-#### Last API for Deleting Profile
+### Last API for Deleting Profile
 Use in the PUT request Header this key and value:
 ![image](https://github.com/javedcoding/CODEXAuthenticationPannel/assets/59325753/2ff0a0e6-daf6-456d-b95a-aaf0d668d3fe)
 
@@ -199,10 +195,10 @@ Response of the API:
 }
 ```
 
-### OAuth2 Authorization Server
+## OAuth2 Authorization Server
 This is an industry standard authorization system. Oauth2 is implemented aith PKCE type Authorization Code. This is stable version 2.0.
 
-#### Step 1: Registering the Application
+### Step 1: Registering the Application
 First you need to register the application. The Developer of the application is responsible registering his/her
 application. For that you need to go to the following URL:
 ```
@@ -215,13 +211,13 @@ need them later. The following picture shows the registering page
 
 ![Application Registering](https://github.com/javedcoding/CODEXAuthenticationPannel/blob/ayan_forked_hung/readme_pics/register.png)
 
-#### Step 2: Consuming (Create an OAuth2 Client)
+### Step 2: Consuming (Create an OAuth2 Client)
 
 Here are some tutorials from the web on how to create a OAuth2 Client. You can follow any of them to get a glimpse of
 how to create a OAuth2 Client.
 
-[NodeJS Tutorial](https://blog.bitsrc.io/step-by-step-guide-to-implementing-oauth2-in-a-node-js-application-89c7e8d202bd)
-[Django](https://songrgg.github.io/programming/django-oauth-client-setup/)
+1. [NodeJS Tutorial](https://blog.bitsrc.io/step-by-step-guide-to-implementing-oauth2-in-a-node-js-application-89c7e8d202bd)
+2. [Django](https://songrgg.github.io/programming/django-oauth-client-setup/)
 
 **_Note: You'll need to create a code verifier and code challenge. Here is a python code and Js code to generate them
 they are not mentioned in all the tutorials_**
@@ -263,7 +259,7 @@ const bodyParams = new URLSearchParams({
   })
 ```
 
-#### Step 2: Consuming (Using Postman)
+### Step 2: Consuming (Using Postman)
 
 **_Note: Code verifier and code challenge is automatically created by postman._**
 
@@ -283,7 +279,7 @@ Then you can get the token by pressing the `Get New Access Token` button. The fo
 
 ![Application Registering](https://github.com/javedcoding/CODEXAuthenticationPannel/blob/ayan_forked_hung/readme_pics/token_creation.png)
 
-#### Step 2: Consuming (Using Commandline & Browser)
+### Step 2: Consuming (Using Commandline & Browser)
 
 **_Note: You'll need to create a code verifier and code challenge. Here is a python code and Js code to generate them
 they are not mentioned in all the tutorials_**
@@ -335,7 +331,7 @@ Where you'll get a response from the server with the Oauth2 access token
 }
 ```
 
-#### Step 3: Using the token
+### Step 3: Using the token
 
 Once you have the token you should put it in the header of the request like this while making requests to the API's
 protected resources.
@@ -346,7 +342,7 @@ const headerParams = new URLSearchParams({
   })
 ```
 
-#### Step 4: Resources behind API:
+### Step 4: Resources behind API:
 
 1. https://codex-auth.azurewebsites.net/auth/user-detail/ (GET): Provides you with all the user details of the user.
     ```json
