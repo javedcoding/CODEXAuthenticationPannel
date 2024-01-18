@@ -115,30 +115,84 @@ A Response will be provided just like below:
     "country": null
 }
 ```
+If token is changed there will be a token field also which is required for Updating Profile or Deleting Profile
+#### Third API for Update-Profile
+
+Use in the PUT request Header this key and value:
+![image](https://github.com/javedcoding/CODEXAuthenticationPannel/assets/59325753/6100abec-dc6d-40a9-850d-c911dc96af90)
+
+```
+Authorization
+Token 527cebf7c984a9ba58fbf7bb3304ae111dadabdf
+```
 
 
-<img width="857" alt="login with token" src="https://github.com/javedcoding/CODEXAuthenticationPannel/assets/59325753/67c3c305-d14f-4914-97a4-bec4893cf81d">
+Format for the body of PUT request:
+![image](https://github.com/javedcoding/CODEXAuthenticationPannel/assets/59325753/04c0bc37-3b14-4625-aeed-eaf574f0676f)
 
-This is a second method to login with registration token. This will later be changed to project login system. So it is not suggested to implement right now.
-
-<img width="858" alt="logout with token" src="https://github.com/javedcoding/CODEXAuthenticationPannel/assets/59325753/638dd8c0-9dac-4033-b301-7938e2efea63">
-
-This is the logout API. The login token will be revoked by this.
-
-<img width="858" alt="update profile token field" src="https://github.com/javedcoding/CODEXAuthenticationPannel/assets/59325753/dd64d56e-5cad-44d6-be9b-1aee6c252e77">
-
-For Updating user profile one needs to put login authentication token.
-
-<img width="849" alt="update profile" src="https://github.com/javedcoding/CODEXAuthenticationPannel/assets/59325753/abec53df-1d3e-4e05-b454-0366f803ef18">
-
-This is the API format for user profile updating.
 ```
 {
-    "first_name": "TeleTest",
-    "last_name": "Test",
+    "first_name": "Mashnunul",
+    "last_name": "Huq",
     "phone": "123123",
-    "city": "mashnunul.huq@stud.fra-uas.de",
-    "state": "uganda",
-    "zip": "60422"
+    "city": "Frankfurte",
+    "addresse": "ben-gurion-ring 50",
+    "state": "hessen",
+    "zip": "60422",
+    "roll": "Super Admin",
+    "Provider": "Audi"
+
+}
+```
+
+Response of the API:
+![image](https://github.com/javedcoding/CODEXAuthenticationPannel/assets/59325753/2a5ecd8c-73cf-4b33-a4f0-4b4f787b4483)
+
+```
+{
+    "message": "Profile updated successfully!!!",
+    "user": {
+        "email": "mashnunul.huq@stud.fra-uas.de",
+        "first_name": "Mashnunul",
+        "last_name": "Huq",
+        "role": "Base User",
+        "provider": "infosys",
+        "phone": "123123",
+        "address": null,
+        "city": "Frankfurte",
+        "state": "hessen",
+        "zip": "60422",
+        "country": null
+    }
+}
+```
+
+#### Last API for Deleting Profile
+Use in the PUT request Header this key and value:
+![image](https://github.com/javedcoding/CODEXAuthenticationPannel/assets/59325753/2ff0a0e6-daf6-456d-b95a-aaf0d668d3fe)
+
+```
+Authorization
+Token 527cebf7c984a9ba58fbf7bb3304ae111dadabdf
+```
+
+
+Format for the body of POST request:
+![image](https://github.com/javedcoding/CODEXAuthenticationPannel/assets/59325753/18aca9d6-08d6-4b03-8a0b-6ef25732859d)
+
+```
+{
+    "username": "Anonymous",
+    "email": "mashnunul.huq@stud.fra-uas.de",
+    "password": "Human055"
+}
+```
+
+Response of the API:
+![image](https://github.com/javedcoding/CODEXAuthenticationPannel/assets/59325753/6b70bd89-d149-46c9-95ca-2912fbb5d335)
+
+```
+{
+    "message": "User deleted successfully"
 }
 ```
