@@ -205,11 +205,14 @@ https://codex-auth.azurewebsites.net/auth/applications/register
 Remember before pressing registering button you need to copy the Client ID and Client Secret and redirect url. You will
 need them later. The following picture shows the registering page
 
-**_Note: The redirect url shouldn't be behind any protected uri._**
+**_Note: The redirect url shouldn't be behind any protected uri. This may reset in failure to retrieve the access
+token_**
 
 ![Application Registering](https://github.com/javedcoding/CODEXAuthenticationPannel/blob/ayan_forked_hung/readme_pics/register.png)
 
-### Step 2: Generating Access & Auth Token (Create an OAuth2 Client)
+### Step 2: Generating Access & Auth Token
+
+#### 1. Create an OAuth2 Client
 
 Here are some tutorials from the web on how to create a OAuth2 Client. You can follow any of them to get a glimpse of
 how to create a OAuth2 Client.
@@ -234,6 +237,8 @@ code_challenge = base64.urlsafe_b64encode(code_challenge).decode('utf-8').replac
 
 You'll need to add the code_challenge when requesting the authorization code along with other parameters.
 
+Sample:
+
 ```js
 const queryParams = new URLSearchParams({
     response_type: 'code',
@@ -244,7 +249,9 @@ const queryParams = new URLSearchParams({
   })
 ```
 
-And the code verifier when requesting the access token.
+And the code verifier when requesting the access token after finishing the step of getting the authorization code.
+
+Sample:
 
 ```js
 const bodyParams = new URLSearchParams({
@@ -257,7 +264,7 @@ const bodyParams = new URLSearchParams({
   })
 ```
 
-### Step 2: Generating Access & Auth Token (Using Postman)
+#### 2. Using Postman
 
 **_Note: Code verifier and code challenge is automatically created by postman._**
 
@@ -277,7 +284,9 @@ Then you can get the token by pressing the `Get New Access Token` button. The fo
 
 ![Token Creation](https://github.com/javedcoding/CODEXAuthenticationPannel/blob/ayan_forked_hung/readme_pics/token_creation.png)
 
-### Step 2: Generating Access & Auth Token (Using Commandline & Browser)
+You'll get a response window consisting the token.
+
+#### 3. Using Commandline & Browser
 
 **_Note: You'll need to create a code verifier and code challenge. Here is a python code and Js code to generate them
 they are not mentioned in all the tutorials_**
